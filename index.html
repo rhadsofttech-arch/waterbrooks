@@ -3,389 +3,873 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Waterbrook Schools — Inspiring Young Minds. Building Bright Futures.</title>
-<meta name="description" content="A premium, world-class learning experience nurturing confidence, creativity and lifelong success at The Waterbrook Schools, Lagos.">
+<title>The Waterbrook Schools — Inspiring Young Minds, Building Bright Futures</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   WATERBROOK SCHOOLS — DESIGN TOKENS
+   ============================================================ */
+:root{
+  --primary:#0F4C81;
+  --primary-dark:#0A3760;
+  --secondary:#1C75BC;
+  --accent:#F4B400;
+  --bg:#F8FAFC;
+  --white:#FFFFFF;
+  --dark-text:#1E293B;
+  --muted-text:#5B6B7F;
+  --border-soft: rgba(15,76,129,0.08);
+  --radius:20px;
+  --radius-sm:14px;
+  --shadow-soft: 0 10px 40px rgba(15,76,129,0.08);
+  --shadow-lift: 0 20px 60px rgba(15,76,129,0.16);
+  --glass-bg: rgba(255,255,255,0.6);
+  --glass-border: rgba(255,255,255,0.5);
+  --font-head:'Poppins', sans-serif;
+  --font-body:'Open Sans', sans-serif;
+  --ease: cubic-bezier(.16,.84,.44,1);
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  color:var(--dark-text);
+  background:var(--bg);
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block; max-width:100%;}
+a{text-decoration:none; color:inherit;}
+button{font-family:inherit; cursor:pointer; border:none;}
+h1,h2,h3,h4{font-family:var(--font-head); color:var(--primary-dark); line-height:1.15;}
+.section-eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--font-head); font-weight:600; font-size:0.78rem;
+  letter-spacing:0.14em; text-transform:uppercase; color:var(--secondary);
+  margin-bottom:14px;
+}
+.section-eyebrow::before{content:''; width:22px; height:2px; background:var(--accent); display:inline-block; border-radius:2px;}
+.section-title{font-size:clamp(1.9rem, 3.4vw, 2.75rem); font-weight:700; margin-bottom:16px;}
+.section-sub{font-size:1.05rem; color:var(--muted-text); max-width:620px; margin-bottom:48px;}
+.container{max-width:1280px; margin:0 auto; padding:0 32px;}
+section{position:relative; padding:120px 0;}
+
+/* Focus visibility for accessibility */
+a:focus-visible, button:focus-visible{outline:3px solid var(--accent); outline-offset:3px; border-radius:6px;}
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+}
+
+/* ============================================================
+   REVEAL ANIMATIONS
+   ============================================================ */
+.reveal{opacity:0; transform:translateY(36px); transition:opacity .9s var(--ease), transform .9s var(--ease);}
+.reveal.left{transform:translateX(-40px);}
+.reveal.right{transform:translateX(40px);}
+.reveal.in{opacity:1; transform:translate(0,0);}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar{
+  position:fixed; top:0; left:0; width:100%; z-index:1000;
+  padding:22px 0; transition:all .5s var(--ease);
+}
+.navbar-inner{
+  max-width:1280px; margin:0 auto; padding:14px 28px;
+  display:flex; align-items:center; justify-content:space-between;
+  border-radius:100px;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.25);
+  transition:all .5s var(--ease);
+}
+.navbar.scrolled{padding:12px 0;}
+.navbar.scrolled .navbar-inner{
+  background:rgba(255,255,255,0.92);
+  border:1px solid rgba(15,76,129,0.08);
+  box-shadow:0 12px 40px rgba(15,76,129,0.1);
+}
+.nav-logo{
+  font-family:var(--font-head); font-weight:700; font-size:1.2rem;
+  color:var(--white); display:flex; align-items:center; gap:10px;
+  transition:color .4s var(--ease);
+}
+.navbar.scrolled .nav-logo{color:var(--primary-dark);}
+.nav-logo-mark{
+  width:38px; height:38px; border-radius:11px;
+  background:linear-gradient(135deg, var(--secondary), var(--primary));
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-weight:700; font-size:1rem; flex-shrink:0;
+}
+.nav-links{display:flex; gap:34px; list-style:none;}
+.nav-links a{
+  color:rgba(255,255,255,0.92); font-size:0.92rem; font-weight:500;
+  position:relative; transition:color .4s var(--ease);
+}
+.navbar.scrolled .nav-links a{color:var(--dark-text);}
+.nav-links a::after{
+  content:''; position:absolute; left:0; bottom:-6px; width:0; height:2px;
+  background:var(--accent); transition:width .3s var(--ease);
+}
+.nav-links a:hover::after{width:100%;}
+.nav-actions{display:flex; align-items:center; gap:12px;}
+.btn{
+  font-family:var(--font-head); font-weight:600; font-size:0.88rem;
+  padding:12px 26px; border-radius:100px; display:inline-flex; align-items:center;
+  gap:8px; position:relative; overflow:hidden; transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+  white-space:nowrap;
+}
+.btn:active{transform:scale(0.97);}
+.btn-primary{background:var(--accent); color:var(--primary-dark);}
+.btn-primary:hover{box-shadow:0 10px 30px rgba(244,180,0,0.4); transform:translateY(-2px);}
+.btn-outline{background:transparent; border:1.5px solid rgba(255,255,255,0.6); color:#fff;}
+.navbar.scrolled .btn-outline{border-color:var(--primary); color:var(--primary);}
+.btn-outline:hover{background:rgba(255,255,255,0.15);}
+.navbar.scrolled .btn-outline:hover{background:rgba(15,76,129,0.06);}
+.btn-solid{background:var(--primary); color:#fff;}
+.btn-solid:hover{box-shadow:0 10px 30px rgba(15,76,129,0.35); transform:translateY(-2px);}
+
+.nav-toggle{display:none; width:40px; height:40px; background:none; align-items:center; justify-content:center;}
+.nav-toggle span, .nav-toggle::before, .nav-toggle::after{display:none;}
+.hamburger{width:22px; height:2px; background:currentColor; position:relative; color:#fff;}
+.navbar.scrolled .hamburger{color:var(--primary-dark);}
+.hamburger::before, .hamburger::after{content:''; position:absolute; left:0; width:22px; height:2px; background:currentColor;}
+.hamburger::before{top:-7px;} .hamburger::after{top:7px;}
+
+/* Ripple effect for buttons */
+.ripple{position:absolute; border-radius:50%; background:rgba(255,255,255,0.5); transform:scale(0); animation:rippleAnim .6s var(--ease);}
+@keyframes rippleAnim{to{transform:scale(3); opacity:0;}}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  height:100vh; min-height:680px; position:relative; display:flex; align-items:center; justify-content:center;
+  overflow:hidden; padding:0;
+}
+.hero-bg{
+  position:absolute; inset:0; z-index:0;
+  background-image:linear-gradient(180deg, rgba(10,40,70,0.72), rgba(10,42,74,0.86) 60%, rgba(6,28,52,0.95)), url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2000&auto=format&fit=crop');
+  background-size:cover; background-position:center;
+  will-change:transform;
+}
+.hero-content{
+  position:relative; z-index:2; text-align:center; color:#fff; max-width:840px;
+  padding:0 24px;
+}
+.hero-eyebrow{
+  display:inline-flex; align-items:center; gap:10px; padding:8px 18px; border-radius:100px;
+  background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25);
+  backdrop-filter:blur(10px); font-size:0.82rem; font-weight:600; letter-spacing:0.06em;
+  margin-bottom:28px; color:#e8f1fa;
+}
+.hero h1{
+  font-size:clamp(2.4rem, 6vw, 4.6rem); font-weight:700; color:#fff; letter-spacing:-0.01em;
+  margin-bottom:22px;
+}
+.hero h1 span{display:block; color:var(--accent);}
+.hero p{
+  font-size:clamp(1rem, 1.6vw, 1.25rem); color:rgba(255,255,255,0.85); max-width:600px;
+  margin:0 auto 40px; font-weight:300;
+}
+.hero-actions{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-bottom:36px;}
+.hero .btn-primary{padding:16px 34px; font-size:0.95rem;}
+.hero .btn-outline{padding:16px 34px; font-size:0.95rem; border-color:rgba(255,255,255,0.5);}
+.hero-trust{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  font-size:0.9rem; color:rgba(255,255,255,0.75); font-weight:500;
+}
+.stars{color:var(--accent); letter-spacing:2px;}
+.scroll-indicator{
+  position:absolute; bottom:36px; left:50%; transform:translateX(-50%); z-index:2;
+  display:flex; flex-direction:column; align-items:center; gap:8px; color:rgba(255,255,255,0.7);
+  font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase;
+}
+.scroll-mouse{
+  width:24px; height:38px; border:2px solid rgba(255,255,255,0.5); border-radius:14px;
+  position:relative;
+}
+.scroll-mouse::before{
+  content:''; position:absolute; top:6px; left:50%; transform:translateX(-50%);
+  width:4px; height:8px; border-radius:2px; background:var(--accent);
+  animation:scrollDot 1.8s infinite;
+}
+@keyframes scrollDot{
+  0%{opacity:1; top:6px;} 70%{opacity:0; top:20px;} 100%{opacity:0; top:6px;}
+}
+
+/* ============================================================
+   BENTO GRID SYSTEM
+   ============================================================ */
+.bento-grid{
+  display:grid; gap:24px;
+}
+.bento-card{
+  background:var(--white); border-radius:var(--radius);
+  padding:38px; box-shadow:var(--shadow-soft);
+  border:1px solid var(--border-soft);
+  transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+  position:relative; overflow:hidden;
+}
+.bento-card:hover{transform:translateY(-6px); box-shadow:var(--shadow-lift);}
+.bento-card.dark{background:linear-gradient(150deg, var(--primary), var(--primary-dark)); color:#fff;}
+.bento-card.dark h3, .bento-card.dark h4{color:#fff;}
+.bento-card.dark p{color:rgba(255,255,255,0.82);}
+.card-icon{
+  width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center;
+  background:rgba(15,76,129,0.08); color:var(--primary); margin-bottom:20px; flex-shrink:0;
+}
+.bento-card.dark .card-icon{background:rgba(255,255,255,0.14); color:var(--accent);}
+.card-icon svg{width:24px; height:24px;}
+.bento-card h3{font-size:1.3rem; margin-bottom:12px;}
+.bento-card h4{font-size:1.05rem; margin-bottom:10px;}
+.bento-card p{color:var(--muted-text); font-size:0.96rem;}
+
+/* --- About Bento --- */
+.about-grid{
+  grid-template-columns:repeat(6,1fr); grid-auto-rows:minmax(140px,auto);
+}
+.about-grid .card-about-main{grid-column:span 3; grid-row:span 2; display:flex; flex-direction:column; justify-content:center;}
+.about-grid .card-mission{grid-column:span 3; grid-row:span 1;}
+.about-grid .card-vision{grid-column:span 3; grid-row:span 1;}
+.about-grid .card-philosophy{grid-column:span 6; grid-row:span 1; display:flex; align-items:center; gap:40px; flex-wrap:wrap;}
+.about-grid .card-philosophy .philosophy-text{flex:1; min-width:260px;}
+.about-grid .card-curriculum{grid-column:span 3;}
+.about-grid .card-safety{grid-column:span 3;}
+.badge-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;}
+.badge{
+  font-size:0.78rem; font-weight:600; padding:6px 14px; border-radius:100px;
+  background:rgba(15,76,129,0.07); color:var(--primary);
+}
+.bento-card.dark .badge{background:rgba(255,255,255,0.16); color:#fff;}
+
+/* --- Why Parents Choose Us --- */
+.choose-grid{grid-template-columns:repeat(4,1fr);}
+.choose-card{text-align:left;}
+.choose-card:hover .card-icon{background:var(--accent); color:var(--primary-dark); transform:rotate(-6deg);}
+.card-icon{transition:all .4s var(--ease);}
+
+/* --- Learning Stages --- */
+.stages-grid{grid-template-columns:repeat(3,1fr);}
+.stage-card{padding:0; overflow:hidden; display:flex; flex-direction:column;}
+.stage-img{height:230px; width:100%; overflow:hidden; position:relative;}
+.stage-img img{width:100%; height:100%; object-fit:cover; transition:transform .7s var(--ease);}
+.stage-card:hover .stage-img img{transform:scale(1.08);}
+.stage-body{padding:30px;}
+.stage-explore{
+  margin-top:18px; display:inline-flex; align-items:center; gap:8px;
+  font-weight:600; color:var(--secondary); font-size:0.92rem;
+}
+.stage-explore svg{width:16px; height:16px; transition:transform .3s var(--ease);}
+.stage-card:hover .stage-explore svg{transform:translateX(4px);}
+
+/* --- Student Life Gallery --- */
+.gallery-grid{
+  grid-template-columns:repeat(4,1fr); grid-auto-rows:170px;
+}
+.gallery-item{border-radius:var(--radius); overflow:hidden; position:relative; box-shadow:var(--shadow-soft);}
+.gallery-item img{width:100%; height:100%; object-fit:cover; transition:transform .7s var(--ease);}
+.gallery-item:hover img{transform:scale(1.1);}
+.gallery-item.g1{grid-column:span 2; grid-row:span 2;}
+.gallery-item.g2{grid-column:span 2; grid-row:span 1;}
+.gallery-item.g3{grid-column:span 1; grid-row:span 1;}
+.gallery-item.g4{grid-column:span 1; grid-row:span 1;}
+.gallery-item.g5{grid-column:span 2; grid-row:span 1;}
+.gallery-item.g6{grid-column:span 2; grid-row:span 2;}
+.gallery-caption{
+  position:absolute; left:0; right:0; bottom:0; padding:20px;
+  background:linear-gradient(0deg, rgba(6,28,52,0.85), transparent);
+  color:#fff; font-family:var(--font-head); font-weight:500; font-size:0.92rem;
+  opacity:0; transform:translateY(10px); transition:all .4s var(--ease);
+}
+.gallery-item:hover .gallery-caption{opacity:1; transform:translateY(0);}
+
+/* --- Testimonials --- */
+.testimonial-grid{grid-template-columns:repeat(3,1fr);}
+.testimonial-card{
+  background:var(--glass-bg); backdrop-filter:blur(16px) saturate(160%);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  border:1px solid var(--glass-border);
+  box-shadow:0 20px 50px rgba(15,76,129,0.1);
+}
+.testimonial-head{display:flex; align-items:center; gap:14px; margin-bottom:18px;}
+.testimonial-avatar{
+  width:52px; height:52px; border-radius:50%; overflow:hidden; flex-shrink:0;
+  border:2px solid rgba(255,255,255,0.7);
+}
+.testimonial-avatar img{width:100%; height:100%; object-fit:cover;}
+.testimonial-name{font-family:var(--font-head); font-weight:600; font-size:0.98rem; color:var(--primary-dark);}
+.testimonial-role{font-size:0.8rem; color:var(--muted-text);}
+.testimonial-quote{font-size:0.98rem; color:var(--dark-text); font-style:italic;}
+
+/* --- Statistics --- */
+.stats-grid{grid-template-columns:repeat(4,1fr);}
+.stat-card{
+  text-align:center; background:var(--glass-bg); backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px); border:1px solid var(--glass-border);
+}
+.stat-number{
+  font-family:var(--font-head); font-weight:800; font-size:clamp(2.2rem,4vw,3rem);
+  color:var(--primary); margin-bottom:6px;
+}
+.stat-label{font-size:0.9rem; color:var(--muted-text); font-weight:500;}
+
+/* ============================================================
+   CTA
+   ============================================================ */
+.cta-section{
+  background:linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-radius:32px; margin:0 32px; padding:90px 40px; text-align:center;
+  position:relative; overflow:hidden;
+}
+.cta-section::before{
+  content:''; position:absolute; width:500px; height:500px; border-radius:50%;
+  background:radial-gradient(circle, rgba(244,180,0,0.18), transparent 70%);
+  top:-200px; right:-150px;
+}
+.cta-section h2{color:#fff; font-size:clamp(1.8rem,3.6vw,2.6rem); margin-bottom:28px; position:relative;}
+.cta-actions{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; position:relative;}
+
+/* ============================================================
+   DIGITAL TRANSFORMATION SECTION
+   ============================================================ */
+.digital-section{background:#EFF5FA;}
+.digital-grid{grid-template-columns:repeat(3,1fr);}
+.digital-card{border-top:3px solid var(--accent);}
+.digital-note{
+  text-align:center; margin-top:44px; font-size:0.88rem; color:var(--muted-text);
+  display:flex; align-items:center; justify-content:center; gap:10px;
+}
+.digital-note::before, .digital-note::after{content:''; width:40px; height:1px; background:var(--border-soft);}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{background:var(--primary-dark); color:rgba(255,255,255,0.7); padding:70px 0 30px;}
+.footer-grid{
+  display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; padding-bottom:44px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.footer-logo{display:flex; align-items:center; gap:10px; color:#fff; font-family:var(--font-head); font-weight:700; font-size:1.15rem; margin-bottom:14px;}
+.footer-col h5{color:#fff; font-family:var(--font-head); font-size:0.95rem; margin-bottom:18px; font-weight:600;}
+.footer-col a{display:block; font-size:0.9rem; margin-bottom:11px; color:rgba(255,255,255,0.65); transition:color .3s;}
+.footer-col a:hover{color:var(--accent);}
+.footer-bottom{padding-top:26px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:0.82rem;}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1024px){
+  .about-grid, .choose-grid, .stages-grid, .digital-grid, .stats-grid, .testimonial-grid{grid-template-columns:repeat(2,1fr);}
+  .about-grid .card-about-main, .about-grid .card-mission, .about-grid .card-vision, .about-grid .card-philosophy, .about-grid .card-curriculum, .about-grid .card-safety{grid-column:span 2;}
+  .about-grid .card-mission{grid-column:span 1;} .about-grid .card-vision{grid-column:span 1;}
+  .about-grid .card-curriculum{grid-column:span 1;} .about-grid .card-safety{grid-column:span 1;}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);}
+  .gallery-item.g1, .gallery-item.g6{grid-column:span 2;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:768px){
+  .nav-links, .nav-actions .btn-outline{display:none;}
+  .nav-toggle{display:flex;}
+  section{padding:80px 0;}
+  .container{padding:0 22px;}
+  .about-grid, .choose-grid, .stages-grid, .digital-grid, .stats-grid, .testimonial-grid, .gallery-grid{grid-template-columns:1fr !important;}
+  .about-grid > div, .gallery-item{grid-column:span 1 !important; grid-row:span 1 !important;}
+  .gallery-item{height:220px;}
+  .cta-section{margin:0 18px; padding:60px 24px;}
+  .footer-grid{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column; text-align:center;}
+}
+</style>
 </head>
 <body>
 
-<!-- ============ NAVBAR ============ -->
-<header class="navbar" id="navbar">
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav class="navbar" id="navbar">
   <div class="navbar-inner">
-    <a href="#home" class="logo">
-      <span class="logo-mark">W</span>
-      <span class="logo-text">Waterbrook <em>Schools</em></span>
+    <a href="#home" class="nav-logo">
+      <span class="nav-logo-mark">WB</span>
+      Waterbrook Schools
     </a>
-
-    <nav class="nav-links" id="navLinks">
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#admissions">Admissions</a>
-      <a href="#academics">Academics</a>
-      <a href="#student-life">Student Life</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#contact">Contact</a>
-    </nav>
-
-    <div class="navbar-actions">
-      <a href="#tour" class="btn btn-ghost">Book a Tour</a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#admissions">Admissions</a></li>
+      <li><a href="#academics">Academics</a></li>
+      <li><a href="#student-life">Student Life</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#tour" class="btn btn-outline">Book a Tour</a>
       <a href="#admissions" class="btn btn-primary">Apply Now</a>
-      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
     </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span class="hamburger"></span></button>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<header class="hero" id="home">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow reveal in">Waterbrook Schools · Lagos</span>
+    <h1 class="reveal in">Inspiring Young Minds.<span>Building Bright Futures.</span></h1>
+    <p class="reveal in">Providing a world-class learning experience that nurtures confidence, creativity, and lifelong success.</p>
+    <div class="hero-actions reveal in">
+      <a href="#admissions" class="btn btn-primary">Apply Now</a>
+      <a href="#tour" class="btn btn-outline">Book a Tour</a>
+    </div>
+    <div class="hero-trust reveal in">
+      <span class="stars">★★★★★</span> Trusted by Parents Across Lagos
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-mouse"></div>
   </div>
 </header>
 
-<!-- ============ HERO ============ -->
-<section class="hero" id="home">
-  <div class="hero-media">
-    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2000&auto=format&fit=crop" alt="Children learning together in a bright modern classroom" loading="eager">
-    <div class="hero-overlay"></div>
-  </div>
-
-  <div class="hero-inner">
-    <div class="hero-content" data-reveal="fade-up">
-      <p class="eyebrow">The Waterbrook Schools · Lagos</p>
-      <h1>Inspiring Young Minds.<br>Building Bright Futures.</h1>
-      <p class="hero-sub">Providing a world-class learning experience that nurtures confidence, creativity, and lifelong success.</p>
-      <div class="hero-actions">
-        <a href="#admissions" class="btn btn-accent btn-lg">Apply Now</a>
-        <a href="#tour" class="btn btn-outline-light btn-lg">Book a Tour</a>
-      </div>
-      <p class="hero-trust">★★★★★ Trusted by Parents Across Lagos</p>
-    </div>
-
-    <button class="scroll-indicator" aria-label="Scroll to content">
-      <span class="scroll-dot"></span>
-    </button>
-  </div>
-</section>
-
-<!-- ============ ABOUT BENTO ============ -->
-<section class="section" id="about">
+<!-- ============================================================
+     BENTO 01 — ABOUT
+     ============================================================ -->
+<section id="about">
   <div class="container">
-    <p class="section-eyebrow" data-reveal="fade-up">About Us</p>
-    <h2 class="section-title" data-reveal="fade-up">A foundation built on care and excellence</h2>
+    <div class="section-eyebrow reveal">About Waterbrook</div>
+    <h2 class="section-title reveal">A Foundation Built on Excellence</h2>
+    <p class="section-sub reveal">For over two decades, Waterbrook Schools has combined academic rigour with genuine warmth &mdash; shaping confident, well-rounded children ready for the world ahead.</p>
 
-    <div class="bento bento-about">
-      <article class="bento-card card-lg card-lg-media glass-none" data-reveal="fade-up">
-        <div class="card-lg-image">
-          <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1200&auto=format&fit=crop" alt="Waterbrook Schools classroom and campus">
+    <div class="bento-grid about-grid">
+      <div class="bento-card dark card-about-main reveal left">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l9 4.5-9 4.5-9-4.5 9-4.5z"/><path d="M7 10v5c0 1.5 2.5 3 5 3s5-1.5 5-3v-5"/></svg>
         </div>
-        <div class="card-lg-body">
-          <h3>About Waterbrook Schools</h3>
-          <p>For over a decade, Waterbrook has welcomed children into a community where curiosity is celebrated and character is built alongside academic excellence. Our classrooms are designed for exploration — small, warm, and led by teachers who know every child by name. We believe a great education begins with feeling safe, seen, and encouraged to ask questions.</p>
-          <a href="#academics" class="text-link">Discover our story →</a>
+        <h3>About Waterbrook Schools</h3>
+        <p>Waterbrook is a premier British-curriculum school in Lagos, dedicated to nurturing curious, capable, and compassionate learners from Early Years through Primary. Our classrooms blend structured academic excellence with the freedom to explore, question, and grow.</p>
+        <div class="badge-row">
+          <span class="badge">Est. Reputation for Excellence</span>
+          <span class="badge">British Curriculum</span>
         </div>
-      </article>
+      </div>
 
-      <article class="bento-card card-sm" data-reveal="fade-up">
-        <span class="card-icon">🎯</span>
-        <h4>Mission</h4>
-        <p>To nurture confident, capable learners through a balanced, child-centred education rooted in strong values.</p>
-      </article>
+      <div class="bento-card card-mission reveal">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.5" fill="currentColor"/></svg></div>
+        <h4>Our Mission</h4>
+        <p>To cultivate a nurturing academic environment where every child discovers their potential and builds the character to pursue it.</p>
+      </div>
 
-      <article class="bento-card card-sm" data-reveal="fade-up">
-        <span class="card-icon">🌅</span>
-        <h4>Vision</h4>
-        <p>A generation of thoughtful leaders equipped to shape a better world, one classroom at a time.</p>
-      </article>
+      <div class="bento-card card-vision reveal">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h4>Our Vision</h4>
+        <p>To be Lagos&rsquo;s most trusted name in early and primary education &mdash; recognised for excellence, safety, and heart.</p>
+      </div>
 
-      <article class="bento-card card-wide glass-none" data-reveal="fade-up">
-        <h4>Our Learning Philosophy</h4>
-        <p>We pair structured academic rigour with room for genuine curiosity — project-based learning, hands-on discovery, and mentorship from teachers who adapt to how each child learns best, not the other way around.</p>
-      </article>
+      <div class="bento-card card-philosophy reveal">
+        <div class="philosophy-text">
+          <h4>Our Learning Philosophy</h4>
+          <p>We believe children learn best when they feel safe, seen, and challenged in equal measure. Every lesson at Waterbrook is designed around inquiry, play, and purposeful discovery &mdash; guided by teachers who know each child by name and by nature.</p>
+        </div>
+        <div class="badge-row">
+          <span class="badge">Inquiry-Led</span>
+          <span class="badge">Child-Centred</span>
+          <span class="badge">Values-Driven</span>
+        </div>
+      </div>
 
-      <article class="bento-card card-sm" data-reveal="fade-up">
-        <span class="card-icon">📘</span>
+      <div class="bento-card card-curriculum reveal left">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
         <h4>British Curriculum</h4>
-        <p>An internationally benchmarked curriculum that opens doors to schools and universities worldwide.</p>
-      </article>
+        <p>A globally respected framework delivering strong foundations in literacy, numeracy, and inquiry-based learning.</p>
+      </div>
 
-      <article class="bento-card card-sm" data-reveal="fade-up">
-        <span class="card-icon">🛡️</span>
+      <div class="bento-card card-safety reveal right">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg></div>
         <h4>Safe Learning Environment</h4>
-        <p>Secure campuses, trained staff, and a culture of care that puts every child's wellbeing first.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ PILLARS: FACILITY / CURRICULUM / COMMUNITY ============ -->
-<section class="section pillars-section">
-  <div class="container">
-    <p class="section-eyebrow" data-reveal="fade-up">What Sets Us Apart</p>
-    <h2 class="section-title" data-reveal="fade-up">Three commitments behind every school day</h2>
-
-    <div class="bento bento-pillars">
-      <article class="pillar-card" data-reveal="fade-up">
-        <span class="pillar-index">01</span>
-        <h4>Purpose-built Facility</h4>
-        <p>Each program consists of its own bi-weekly theme and activities, so your child has something new to anticipate with each week.</p>
-      </article>
-
-      <article class="pillar-card" data-reveal="fade-up">
-        <span class="pillar-index">02</span>
-        <h4>Child-centred Curriculum</h4>
-        <p>Through innovative teaching methods and a supportive environment, we empower students to unleash their imagination, explore new ideas, and bring their visions to life.</p>
-      </article>
-
-      <article class="pillar-card" data-reveal="fade-up">
-        <span class="pillar-index">03</span>
-        <h4>Fostering Community</h4>
-        <p>At The Waterbrook, we focus on fostering an inclusive community. Our aim is to unite our children, parents, and staff through dedication, achievement, and service.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ WHY PARENTS CHOOSE US ============ -->
-<section class="section section-tint">
-  <div class="container">
-    <p class="section-eyebrow" data-reveal="fade-up">Why Parents Choose Us</p>
-    <h2 class="section-title" data-reveal="fade-up">Everything a growing mind needs, in one place</h2>
-
-    <div class="bento bento-features">
-      <div class="feature-card" data-reveal="fade-up">
-        <span class="card-icon">🧒</span>
-        <h4>Child-Centred Learning</h4>
-        <p>Every lesson is shaped around how children actually learn best.</p>
-      </div>
-      <div class="feature-card" data-reveal="fade-up">
-        <span class="card-icon">👥</span>
-        <h4>Small Class Sizes</h4>
-        <p>More attention, more encouragement, better outcomes.</p>
-      </div>
-      <div class="feature-card" data-reveal="fade-up">
-        <span class="card-icon">🍎</span>
-        <h4>Experienced Teachers</h4>
-        <p>Passionate educators dedicated to every child's growth.</p>
-      </div>
-      <div class="feature-card" data-reveal="fade-up">
-        <span class="card-icon">🏊</span>
-        <h4>Swimming</h4>
-        <p>Confidence in and out of the water, from an early age.</p>
-      </div>
-      <div class="feature-card" data-reveal="fade-up">
-        <span class="card-icon">🇫🇷</span>
-        <h4>French</h4>
-        <p>A second language taught early, naturally, and joyfully.</p>
-      </div>
-      <div class="feature-card" data-reveal="fade-up">
-        <span class="card-icon">🎨</span>
-        <h4>Creative Arts</h4>
-        <p>Music, art, and drama that let personality flourish.</p>
-      </div>
-      <div class="feature-card" data-reveal="fade-up">
-        <span class="card-icon">🌳</span>
-        <h4>Outdoor Learning</h4>
-        <p>Fresh air, movement, and hands-on discovery every week.</p>
-      </div>
-      <div class="feature-card" data-reveal="fade-up">
-        <span class="card-icon">💻</span>
-        <h4>Technology Integration</h4>
-        <p>Purposeful use of technology that supports, not replaces, learning.</p>
+        <p>Secure campuses, trained staff, and warm supervision, so every family can trust where their child spends the day.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ LEARNING STAGES ============ -->
-<section class="section" id="academics">
+<!-- ============================================================
+     BENTO 02 — WHY PARENTS CHOOSE US
+     ============================================================ -->
+<section style="background:#fff;">
   <div class="container">
-    <p class="section-eyebrow" data-reveal="fade-up">Learning Stages</p>
-    <h2 class="section-title" data-reveal="fade-up">A journey shaped for every age</h2>
+    <div class="section-eyebrow reveal">Why Waterbrook</div>
+    <h2 class="section-title reveal">Why Parents Choose Us</h2>
+    <p class="section-sub reveal">Every detail of the Waterbrook experience is considered &mdash; from class sizes to the languages our children speak.</p>
 
-    <div class="bento bento-stages">
-      <article class="stage-card" data-reveal="fade-left">
-        <img src="https://images.unsplash.com/photo-1587616211892-b3fd0089a1d5?q=80&w=1200&auto=format&fit=crop" alt="Early years child playing and learning">
+    <div class="bento-grid choose-grid">
+      <div class="bento-card choose-card reveal">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 20c0-3 3.5-5 8-5s8 2 8 5"/></svg></div>
+        <h3 style="font-size:1.08rem;">Child-Centred Learning</h3>
+        <p>Every plan starts with the child &mdash; their pace, curiosity, and personality.</p>
+      </div>
+      <div class="bento-card choose-card reveal">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M3 19c0-2.5 2.5-4 5-4M21 19c0-2.5-2.5-4-5-4"/></svg></div>
+        <h3 style="font-size:1.08rem;">Small Class Sizes</h3>
+        <p>Focused attention with low student-to-teacher ratios in every classroom.</p>
+      </div>
+      <div class="bento-card choose-card reveal">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V6a2 2 0 012-2h8l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M14 4v6h6"/></svg></div>
+        <h3 style="font-size:1.08rem;">Experienced Teachers</h3>
+        <p>Qualified, caring educators who bring both expertise and warmth.</p>
+      </div>
+      <div class="bento-card choose-card reveal">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12c3-4 6-4 10 0s7 4 10 0M2 17c3-4 6-4 10 0s7 4 10 0"/></svg></div>
+        <h3 style="font-size:1.08rem;">Swimming</h3>
+        <p>Supervised swim instruction that builds confidence in and out of the water.</p>
+      </div>
+      <div class="bento-card choose-card reveal">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 4v16M5 8c2-2 4-2 7 0s5 2 7 0M5 16c2-2 4-2 7 0s5 2 7 0"/></svg></div>
+        <h3 style="font-size:1.08rem;">French</h3>
+        <p>Early language exposure that opens minds to new cultures and ideas.</p>
+      </div>
+      <div class="bento-card choose-card reveal">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 19c-4-3-8-5-8-9a4 4 0 018-2 4 4 0 018 2c0 4-4 6-8 9z"/></svg></div>
+        <h3 style="font-size:1.08rem;">Creative Arts</h3>
+        <p>Music, drama, and visual art woven into everyday learning.</p>
+      </div>
+      <div class="bento-card choose-card reveal">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l4-7h10l4 7-4 7H7l-4-7z"/><circle cx="12" cy="12" r="2.5"/></svg></div>
+        <h3 style="font-size:1.08rem;">Outdoor Learning</h3>
+        <p>Nature-based play and discovery beyond the classroom walls.</p>
+      </div>
+      <div class="bento-card choose-card reveal">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="12" rx="2"/><path d="M9 20h6M12 16v4"/></svg></div>
+        <h3 style="font-size:1.08rem;">Technology Integration</h3>
+        <p>Purposeful, age-appropriate use of technology to support learning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     BENTO 03 — LEARNING STAGES
+     ============================================================ -->
+<section id="academics" style="background:var(--bg);">
+  <div class="container">
+    <div class="section-eyebrow reveal">Academics</div>
+    <h2 class="section-title reveal">Learning Stages</h2>
+    <p class="section-sub reveal">A carefully staged journey from first steps to strong foundations, each phase designed for exactly where your child is.</p>
+
+    <div class="bento-grid stages-grid">
+      <div class="bento-card stage-card reveal left">
+        <div class="stage-img"><img src="https://images.unsplash.com/photo-1587616211892-b9d1198aec8e?q=80&w=900&auto=format&fit=crop" alt="Early Years children playing and learning together"></div>
         <div class="stage-body">
-          <h4>Early Years</h4>
-          <p>Play-led discovery that builds language, confidence, and social skills from the very start.</p>
-          <a href="#" class="text-link">Explore →</a>
+          <h3>Early Years</h3>
+          <p>Gentle first steps into structured learning through play, sensory discovery, and social growth.</p>
+          <a href="#admissions" class="stage-explore">Explore Early Years <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
-      </article>
-      <article class="stage-card" data-reveal="fade-up">
-        <img src="https://images.unsplash.com/photo-1544776193-0d3c02c3a9a2?q=80&w=1200&auto=format&fit=crop" alt="Nursery children in a classroom activity">
+      </div>
+      <div class="bento-card stage-card reveal">
+        <div class="stage-img"><img src="https://images.unsplash.com/photo-1544776193-352d25ca82cd?q=80&w=900&auto=format&fit=crop" alt="Nursery children in a bright classroom"></div>
         <div class="stage-body">
-          <h4>Nursery</h4>
-          <p>Structured routines and gentle guidance that prepare children for formal learning.</p>
-          <a href="#" class="text-link">Explore →</a>
+          <h3>Nursery</h3>
+          <p>Building language, numeracy, and independence through guided, playful exploration.</p>
+          <a href="#admissions" class="stage-explore">Explore Nursery <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
-      </article>
-      <article class="stage-card" data-reveal="fade-right">
-        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop" alt="Primary school children studying together">
+      </div>
+      <div class="bento-card stage-card reveal right">
+        <div class="stage-img"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=900&auto=format&fit=crop" alt="Primary school students learning in classroom"></div>
         <div class="stage-body">
-          <h4>Primary School</h4>
-          <p>A rigorous British curriculum balanced with creativity, sport, and character education.</p>
-          <a href="#" class="text-link">Explore →</a>
+          <h3>Primary School</h3>
+          <p>Deepening academic mastery across the British curriculum while nurturing character and leadership.</p>
+          <a href="#admissions" class="stage-explore">Explore Primary <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ STUDENT LIFE GALLERY ============ -->
-<section class="section section-tint" id="student-life">
-  <div class="container">
-    <p class="section-eyebrow" data-reveal="fade-up">Student Life</p>
-    <h2 class="section-title" data-reveal="fade-up">Moments that make school unforgettable</h2>
-
-    <div class="bento bento-gallery" id="gallery">
-      <div class="gallery-item item-big" data-reveal="fade-up">
-        <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=1400&auto=format&fit=crop" alt="Students collaborating on a class project">
-      </div>
-      <div class="gallery-item" data-reveal="fade-up">
-        <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=900&auto=format&fit=crop" alt="Child painting during art class">
-      </div>
-      <div class="gallery-item" data-reveal="fade-up">
-        <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=900&auto=format&fit=crop" alt="Students in the school library">
-      </div>
-      <div class="gallery-item" data-reveal="fade-up">
-        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=900&auto=format&fit=crop" alt="Children playing sports outdoors">
-      </div>
-      <div class="gallery-item item-big" data-reveal="fade-up">
-        <img src="https://images.unsplash.com/photo-1497486751825-1233686d5d80?q=80&w=1400&auto=format&fit=crop" alt="Students presenting a STEM project">
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ TESTIMONIALS ============ -->
-<section class="section">
+<!-- ============================================================
+     BENTO 04 — STUDENT LIFE GALLERY
+     ============================================================ -->
+<section id="student-life" style="background:#fff;">
   <div class="container">
-    <p class="section-eyebrow" data-reveal="fade-up">Testimonials</p>
-    <h2 class="section-title" data-reveal="fade-up">What our parents say</h2>
+    <div class="section-eyebrow reveal">Student Life</div>
+    <h2 class="section-title reveal">Moments That Shape Childhood</h2>
+    <p class="section-sub reveal">A glimpse into the everyday joy, curiosity, and friendship that fill our halls and playgrounds.</p>
 
-    <div class="testimonials">
-      <article class="testimonial-card glass" data-reveal="fade-up">
-        <div class="testimonial-stars">★★★★★</div>
-        <p>"My daughter has blossomed here. The teachers genuinely know her, and it shows in how excited she is to go to school every morning."</p>
-        <div class="testimonial-author">
-          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop" alt="Parent portrait">
-          <div>
-            <strong>Adaeze O.</strong>
-            <span>Parent, Primary 3</span>
-          </div>
+    <div class="bento-grid gallery-grid" id="gallery">
+      <div class="gallery-item g1 reveal"><img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1200&auto=format&fit=crop" alt="Children reading together in library"><div class="gallery-caption">Library &amp; Storytime</div></div>
+      <div class="gallery-item g2 reveal"><img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=1000&auto=format&fit=crop" alt="Students in science class"><div class="gallery-caption">STEM Discovery</div></div>
+      <div class="gallery-item g3 reveal"><img src="https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=700&auto=format&fit=crop" alt="Children playing outdoors"><div class="gallery-caption">Outdoor Play</div></div>
+      <div class="gallery-item g4 reveal"><img src="https://images.unsplash.com/photo-1596496181861-5a5c8e0f0e0a?q=80&w=700&auto=format&fit=crop" alt="Art class with painting"><div class="gallery-caption">Creative Arts</div></div>
+      <div class="gallery-item g5 reveal"><img src="https://images.unsplash.com/photo-1541943181603-d8fe267a5dcf?q=80&w=1000&auto=format&fit=crop" alt="Children in sports activity"><div class="gallery-caption">Sports &amp; Teamwork</div></div>
+      <div class="gallery-item g6 reveal"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop" alt="Graduation ceremony celebration"><div class="gallery-caption">Milestone Celebrations</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TESTIMONIALS
+     ============================================================ -->
+<section style="background:var(--bg);">
+  <div class="container">
+    <div class="section-eyebrow reveal">Testimonials</div>
+    <h2 class="section-title reveal">What Parents Are Saying</h2>
+    <p class="section-sub reveal">The trust of the families we serve is our proudest measure of success.</p>
+
+    <div class="bento-grid testimonial-grid">
+      <div class="bento-card testimonial-card reveal left">
+        <div class="testimonial-head">
+          <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop" alt="Portrait of Adaeze O., Waterbrook parent"></div>
+          <div><div class="testimonial-name">Adaeze O.</div><div class="testimonial-role">Parent, Primary 3</div></div>
         </div>
-      </article>
-
-      <article class="testimonial-card glass" data-reveal="fade-up">
-        <div class="testimonial-stars">★★★★★</div>
-        <p>"The small class sizes make all the difference. Our son gets the attention he needs, and the results speak for themselves."</p>
-        <div class="testimonial-author">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop" alt="Parent portrait">
-          <div>
-            <strong>Tunde A.</strong>
-            <span>Parent, Nursery 2</span>
-          </div>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-quote">My daughter looks forward to school every single morning. The teachers know her by name and by nature.</p>
+      </div>
+      <div class="bento-card testimonial-card reveal">
+        <div class="testimonial-head">
+          <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop" alt="Portrait of Emeka N., Waterbrook parent"></div>
+          <div><div class="testimonial-name">Emeka N.</div><div class="testimonial-role">Parent, Nursery</div></div>
         </div>
-      </article>
-
-      <article class="testimonial-card glass" data-reveal="fade-up">
-        <div class="testimonial-stars">★★★★★</div>
-        <p>"From the safety measures to the warmth of the staff, Waterbrook feels like an extension of our family. Highly recommended."</p>
-        <div class="testimonial-author">
-          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=200&auto=format&fit=crop" alt="Parent portrait">
-          <div>
-            <strong>Funmi K.</strong>
-            <span>Parent, Early Years</span>
-          </div>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-quote">The balance of structure and warmth is exactly what we searched Lagos for. Waterbrook delivers both.</p>
+      </div>
+      <div class="bento-card testimonial-card reveal right">
+        <div class="testimonial-head">
+          <div class="testimonial-avatar"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=200&auto=format&fit=crop" alt="Portrait of Funke A., Waterbrook parent"></div>
+          <div><div class="testimonial-name">Funke A.</div><div class="testimonial-role">Parent, Early Years</div></div>
         </div>
-      </article>
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-quote">From the first tour, it felt different &mdash; genuinely caring staff and a curriculum that actually challenges him.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============ STATISTICS ============ -->
-<section class="section section-tint">
+<!-- ============================================================
+     STATISTICS
+     ============================================================ -->
+<section style="background:#fff; padding-top:60px; padding-bottom:60px;">
   <div class="container">
-    <div class="bento bento-stats">
-      <div class="stat-card glass" data-reveal="fade-up">
-        <span class="stat-number" data-count="12">0</span>
-        <span class="stat-suffix">+</span>
-        <p>Years of Excellence</p>
-      </div>
-      <div class="stat-card glass" data-reveal="fade-up">
-        <span class="stat-number" data-count="850">0</span>
-        <span class="stat-suffix">+</span>
-        <p>Students</p>
-      </div>
-      <div class="stat-card glass" data-reveal="fade-up">
-        <span class="stat-number" data-count="60">0</span>
-        <span class="stat-suffix">+</span>
-        <p>Experienced Teachers</p>
-      </div>
-      <div class="stat-card glass" data-reveal="fade-up">
-        <span class="stat-number" data-count="98">0</span>
-        <span class="stat-suffix">%</span>
-        <p>Parent Satisfaction</p>
-      </div>
+    <div class="bento-grid stats-grid">
+      <div class="bento-card stat-card reveal"><div class="stat-number" data-count="22">0</div><div class="stat-label">Years of Excellence</div></div>
+      <div class="bento-card stat-card reveal"><div class="stat-number" data-count="640">0</div><div class="stat-label">Students</div></div>
+      <div class="bento-card stat-card reveal"><div class="stat-number" data-count="58">0</div><div class="stat-label">Experienced Teachers</div></div>
+      <div class="bento-card stat-card reveal"><div class="stat-number" data-count="98" data-suffix="%">0</div><div class="stat-label">Parent Satisfaction</div></div>
     </div>
   </div>
 </section>
 
-<!-- ============ CTA ============ -->
-<section class="cta" id="tour">
-  <div class="container cta-inner" data-reveal="fade-up">
-    <h2>Begin Your Child's Journey Today</h2>
-    <div class="hero-actions">
-      <a href="#tour" class="btn btn-outline-light btn-lg">Book a Tour</a>
-      <a href="#admissions" class="btn btn-accent btn-lg">Apply Now</a>
+<!-- ============================================================
+     CTA
+     ============================================================ -->
+<section id="admissions" style="padding-top:20px;">
+  <div class="cta-section reveal">
+    <h2>Begin Your Child&rsquo;s Journey Today</h2>
+    <div class="cta-actions">
+      <a href="#tour" class="btn btn-primary">Book a Tour</a>
+      <a href="#contact" class="btn btn-outline">Apply Now</a>
     </div>
   </div>
 </section>
 
-<!-- ============ DIGITAL TRANSFORMATION (RHADSOFT PROPOSAL) ============ -->
-<section class="section digital-section" id="admissions">
+<!-- ============================================================
+     DIGITAL TRANSFORMATION OPPORTUNITIES (RHADSOFT PROPOSAL)
+     ============================================================ -->
+<section class="digital-section">
   <div class="container">
-    <p class="section-eyebrow" data-reveal="fade-up">Digital Transformation Opportunities</p>
-    <h2 class="section-title" data-reveal="fade-up">Extending the Waterbrook experience online</h2>
+    <div class="section-eyebrow reveal">Proposal</div>
+    <h2 class="section-title reveal">Digital Transformation Opportunities</h2>
+    <p class="section-sub reveal">A forward-looking concept for how Waterbrook&rsquo;s digital presence could extend beyond the website &mdash; into the daily tools parents, teachers, and administrators rely on.</p>
 
-    <div class="bento bento-digital">
-      <article class="digital-card" data-reveal="fade-up">
-        <span class="card-icon">👨‍👩‍👧</span>
-        <h4>Parent Portal</h4>
-        <p>Parents can monitor attendance, report cards, assignments, school fees, and announcements — all from one secure dashboard.</p>
-      </article>
-      <article class="digital-card" data-reveal="fade-up">
-        <span class="card-icon">🍎</span>
-        <h4>Teacher Portal</h4>
-        <p>Teachers can manage attendance, lesson plans, assignments, results, and student records with less paperwork.</p>
-      </article>
-      <article class="digital-card" data-reveal="fade-up">
-        <span class="card-icon">📝</span>
-        <h4>Online Admissions</h4>
+    <div class="bento-grid digital-grid">
+      <div class="bento-card digital-card reveal left">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg></div>
+        <h3 style="font-size:1.15rem;">Parent Portal</h3>
+        <p>Parents can monitor attendance, report cards, assignments, school fees, and announcements &mdash; all from one secure dashboard.</p>
+      </div>
+      <div class="bento-card digital-card reveal">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V6a2 2 0 012-2h8l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M9 13h6M9 17h4"/></svg></div>
+        <h3 style="font-size:1.15rem;">Teacher Portal</h3>
+        <p>Teachers can manage attendance, lesson plans, assignments, results, and student records with ease.</p>
+      </div>
+      <div class="bento-card digital-card reveal right">
+        <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 12a4 4 0 100-8 4 4 0 000 8z"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M18 8l2 2 3-3"/></svg></div>
+        <h3 style="font-size:1.15rem;">Online Admissions</h3>
         <p>Parents can apply online, upload documents, schedule interviews, and track admission status in real time.</p>
-      </article>
+      </div>
     </div>
-
-    <p class="digital-note" data-reveal="fade-up">Concept Design &amp; Digital Transformation Proposal by Rhadsoft Tech.</p>
+    <p class="digital-note">Concept Design &amp; Digital Transformation Proposal by Rhadsoft Tech.</p>
   </div>
 </section>
 
-<!-- ============ FOOTER ============ -->
-<footer class="footer" id="contact">
-  <div class="container footer-inner">
-    <div class="footer-brand">
-      <span class="logo-mark">W</span>
-      <span class="logo-text">Waterbrook <em>Schools</em></span>
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo"><span class="nav-logo-mark">WB</span>Waterbrook Schools</div>
+        <p style="font-size:0.9rem; max-width:280px;">A nurturing British-curriculum school in Lagos, dedicated to inspiring young minds and building bright futures.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Explore</h5>
+        <a href="#about">About</a>
+        <a href="#academics">Academics</a>
+        <a href="#student-life">Student Life</a>
+        <a href="#gallery">Gallery</a>
+      </div>
+      <div class="footer-col">
+        <h5>Admissions</h5>
+        <a href="#admissions">Apply Now</a>
+        <a href="#tour">Book a Tour</a>
+        <a href="#contact">Contact Us</a>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <a href="#">Lagos, Nigeria</a>
+        <a href="#">info@waterbrookschools.ng</a>
+        <a href="#">+234 800 000 0000</a>
+      </div>
     </div>
-    <nav class="footer-links">
-      <a href="#about">About</a>
-      <a href="#admissions">Admissions</a>
-      <a href="#academics">Academics</a>
-      <a href="#student-life">Student Life</a>
-      <a href="#gallery">Gallery</a>
-    </nav>
-    <p class="footer-copy">© 2026 The Waterbrook Schools. All rights reserved.</p>
+    <div class="footer-bottom">
+      <span>&copy; 2026 The Waterbrook Schools. All rights reserved.</span>
+      <span>Concept by Rhadsoft Tech</span>
+    </div>
   </div>
 </footer>
 
-<script src="script.js"></script>
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Navbar scroll state ---------- */
+  const navbar = document.getElementById('navbar');
+  function handleNavScroll(){
+    if(window.scrollY > 40){ navbar.classList.add('scrolled'); }
+    else{ navbar.classList.remove('scrolled'); }
+  }
+  window.addEventListener('scroll', handleNavScroll, {passive:true});
+  handleNavScroll();
+
+  /* ---------- Mobile nav toggle (simple slide-down menu) ---------- */
+  const navToggle = document.getElementById('navToggle');
+  let mobileOpen = false;
+  navToggle.addEventListener('click', function(){
+    mobileOpen = !mobileOpen;
+    const links = document.querySelector('.nav-links');
+    if(mobileOpen){
+      links.style.display='flex';
+      links.style.position='fixed';
+      links.style.top='90px';
+      links.style.left='22px';
+      links.style.right='22px';
+      links.style.flexDirection='column';
+      links.style.background='rgba(255,255,255,0.97)';
+      links.style.padding='24px';
+      links.style.borderRadius='20px';
+      links.style.boxShadow='0 20px 50px rgba(15,76,129,0.18)';
+      links.querySelectorAll('a').forEach(a=>a.style.color='#1E293B');
+    } else {
+      links.removeAttribute('style');
+    }
+  });
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    a.addEventListener('click', ()=>{
+      if(mobileOpen){ mobileOpen=false; document.querySelector('.nav-links').removeAttribute('style'); }
+    });
+  });
+
+  /* ---------- Scroll reveal via IntersectionObserver ---------- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15, rootMargin:'0px 0px -60px 0px'});
+  revealEls.forEach(el=>io.observe(el));
+
+  /* ---------- Hero subtle parallax ---------- */
+  const heroBg = document.getElementById('heroBg');
+  window.addEventListener('scroll', function(){
+    const y = window.scrollY;
+    if(y < window.innerHeight){
+      heroBg.style.transform = 'translateY(' + (y*0.35) + 'px) scale(' + (1 + y*0.0003) + ')';
+    }
+  }, {passive:true});
+
+  /* ---------- Animated counters for statistics ---------- */
+  const counters = document.querySelectorAll('.stat-number');
+  const counterIO = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        animateCounter(entry.target);
+        counterIO.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.5});
+  counters.forEach(c=>counterIO.observe(c));
+
+  function animateCounter(el){
+    const target = parseInt(el.getAttribute('data-count'), 10);
+    const suffix = el.getAttribute('data-suffix') || '';
+    const duration = 1600;
+    const start = performance.now();
+    function tick(now){
+      const progress = Math.min((now-start)/duration, 1);
+      const eased = 1 - Math.pow(1-progress, 3);
+      el.textContent = Math.round(eased * target) + suffix;
+      if(progress < 1){ requestAnimationFrame(tick); }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* ---------- Button ripple effect ---------- */
+  document.querySelectorAll('.btn').forEach(btn=>{
+    btn.addEventListener('click', function(e){
+      const rect = btn.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      const size = Math.max(rect.width, rect.height);
+      ripple.className='ripple';
+      ripple.style.width = ripple.style.height = size+'px';
+      ripple.style.left = (e.clientX - rect.left - size/2)+'px';
+      ripple.style.top = (e.clientY - rect.top - size/2)+'px';
+      btn.style.position='relative';
+      btn.style.overflow='hidden';
+      btn.appendChild(ripple);
+      setTimeout(()=>ripple.remove(), 650);
+    });
+  });
+
+  /* ---------- Smooth scroll for in-page anchors ---------- */
+  document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
+    anchor.addEventListener('click', function(e){
+      const id = this.getAttribute('href');
+      if(id.length>1){
+        const target = document.querySelector(id);
+        if(target){
+          e.preventDefault();
+          const y = target.getBoundingClientRect().top + window.scrollY - 90;
+          window.scrollTo({top:y, behavior:'smooth'});
+        }
+      }
+    });
+  });
+
+})();
+</script>
 </body>
 </html>
