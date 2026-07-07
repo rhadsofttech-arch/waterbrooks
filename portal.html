@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Login — The Waterbrook Schools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#0F4C81;
+  --primary-dark:#0A3760;
+  --secondary:#1C75BC;
+  --accent:#F4B400;
+  --bg:#F8FAFC;
+  --white:#FFFFFF;
+  --dark-text:#1E293B;
+  --muted-text:#5B6B7F;
+  --border-soft: rgba(15,76,129,0.1);
+  --radius:20px;
+  --shadow-soft: 0 10px 40px rgba(15,76,129,0.08);
+  --shadow-lift: 0 24px 60px rgba(15,76,129,0.18);
+  --font-head:'Poppins', sans-serif;
+  --font-body:'Open Sans', sans-serif;
+  --ease: cubic-bezier(.16,.84,.44,1);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  font-family:var(--font-body); color:var(--dark-text); background:var(--bg);
+  min-height:100vh; -webkit-font-smoothing:antialiased;
+}
+a{color:inherit; text-decoration:none;}
+button{font-family:inherit; cursor:pointer; border:none;}
+h1,h2,h3{font-family:var(--font-head); color:var(--primary-dark);}
+
+/* Focus visibility */
+a:focus-visible, button:focus-visible, input:focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px;}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms !important; transition-duration:.01ms !important;} }
+
+/* ============================================================
+   PAGE SHELL — split screen
+   ============================================================ */
+.login-shell{
+  min-height:100vh; display:grid; grid-template-columns:1fr 1fr;
+}
+
+/* ---------- Left: brand / photo panel ---------- */
+.brand-panel{
+  position:relative; overflow:hidden; display:flex; flex-direction:column;
+  justify-content:space-between; padding:48px 56px; color:#fff;
+}
+.brand-panel-bg{
+  position:absolute; inset:0; z-index:0;
+  background-image:linear-gradient(180deg, rgba(8,34,60,0.55), rgba(6,28,52,0.82)), url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1600&auto=format&fit=crop');
+  background-size:cover; background-position:center;
+}
+.brand-pattern{
+  position:absolute; inset:0; z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' opacity='0.12'%3E%3Cpath d='M14 34c6-10 18-10 24 0'/%3E%3Cpath d='M118 96c6-10 18-10 24 0'/%3E%3Cpath d='M60 140c6-9 17-9 23 0'/%3E%3C/g%3E%3Cg fill='%23F4B400' opacity='0.2'%3E%3Ccircle cx='30' cy='118' r='3.4'/%3E%3Ccircle cx='140' cy='40' r='3.4'/%3E%3Ccircle cx='96' cy='128' r='2.6'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat:repeat; background-size:160px 160px;
+}
+.brand-panel > .brand-logo, .brand-panel > .brand-copy, .brand-panel > .brand-foot{position:relative; z-index:2;}
+.brand-logo{display:flex; align-items:center; gap:12px; font-family:var(--font-head); font-weight:700; font-size:1.25rem;}
+.brand-logo-mark{
+  width:42px; height:42px; border-radius:12px;
+  background:linear-gradient(135deg, var(--secondary), var(--primary));
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1rem;
+  border:1px solid rgba(255,255,255,0.3);
+}
+.brand-copy{max-width:420px;}
+.brand-copy .eyebrow{
+  display:inline-flex; align-items:center; gap:8px; padding:7px 16px; border-radius:100px;
+  background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25);
+  font-size:0.78rem; font-weight:600; letter-spacing:0.05em; margin-bottom:22px;
+}
+.brand-copy h1{font-size:2.1rem; color:#fff; line-height:1.2; margin-bottom:16px; font-weight:700;}
+.brand-copy p{font-size:1rem; color:rgba(255,255,255,0.82); font-weight:300; line-height:1.7;}
+.brand-foot{font-size:0.82rem; color:rgba(255,255,255,0.6); display:flex; align-items:center; gap:10px;}
+.brand-foot .stars{color:var(--accent); letter-spacing:2px;}
+
+/* ---------- Right: form panel ---------- */
+.form-panel{
+  display:flex; align-items:center; justify-content:center; padding:48px 32px;
+  background:var(--bg);
+}
+.form-card{
+  width:100%; max-width:420px;
+}
+.form-head{margin-bottom:32px;}
+.form-head h2{font-size:1.7rem; margin-bottom:8px; font-weight:700;}
+.form-head p{color:var(--muted-text); font-size:0.95rem;}
+
+/* Role switch */
+.role-switch{
+  display:flex; background:#fff; border:1px solid var(--border-soft); border-radius:100px;
+  padding:5px; margin-bottom:30px; box-shadow:var(--shadow-soft);
+}
+.role-switch button{
+  flex:1; padding:11px 14px; border-radius:100px; font-family:var(--font-head);
+  font-weight:600; font-size:0.88rem; color:var(--muted-text); background:transparent;
+  transition:all .35s var(--ease); position:relative; z-index:1;
+}
+.role-switch button.active{color:#fff;}
+.role-switch{position:relative;}
+.role-switch-thumb{
+  position:absolute; top:5px; left:5px; height:calc(100% - 10px); width:calc(50% - 5px);
+  background:linear-gradient(135deg, var(--secondary), var(--primary)); border-radius:100px;
+  transition:transform .4s var(--ease); z-index:0;
+  box-shadow:0 8px 20px rgba(15,76,129,0.3);
+}
+.role-switch[data-role="teacher"] .role-switch-thumb{transform:translateX(100%);}
+
+/* Glass form card */
+.glass-form{
+  background:rgba(255,255,255,0.7); backdrop-filter:blur(16px) saturate(160%);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  border:1px solid rgba(255,255,255,0.6); border-radius:var(--radius);
+  box-shadow:var(--shadow-soft); padding:34px;
+}
+.field{margin-bottom:20px;}
+.field label{
+  display:block; font-size:0.85rem; font-weight:600; color:var(--dark-text); margin-bottom:8px;
+  font-family:var(--font-head);
+}
+.input-wrap{position:relative;}
+.input-wrap svg{
+  position:absolute; left:16px; top:50%; transform:translateY(-50%); width:18px; height:18px;
+  color:var(--muted-text); pointer-events:none;
+}
+.input-wrap input{
+  width:100%; padding:13px 16px 13px 46px; border-radius:12px; border:1.5px solid var(--border-soft);
+  background:#fff; font-family:var(--font-body); font-size:0.95rem; color:var(--dark-text);
+  transition:border-color .3s var(--ease), box-shadow .3s var(--ease);
+}
+.input-wrap input:focus{
+  border-color:var(--secondary); outline:none; box-shadow:0 0 0 4px rgba(28,117,188,0.12);
+}
+.input-wrap .toggle-pass{
+  position:absolute; right:14px; top:50%; transform:translateY(-50%); background:none;
+  color:var(--muted-text); padding:4px; display:flex;
+}
+.input-wrap .toggle-pass svg{position:static; transform:none;}
+
+.form-row-between{display:flex; align-items:center; justify-content:space-between; margin-bottom:26px; font-size:0.88rem;}
+.remember{display:flex; align-items:center; gap:8px; color:var(--muted-text); cursor:pointer;}
+.remember input{width:16px; height:16px; accent-color:var(--primary); cursor:pointer;}
+.forgot-link{color:var(--secondary); font-weight:600; transition:color .3s;}
+.forgot-link:hover{color:var(--primary-dark);}
+
+.btn-login{
+  width:100%; padding:15px; border-radius:100px; background:var(--accent); color:var(--primary-dark);
+  font-family:var(--font-head); font-weight:700; font-size:0.95rem; display:flex; align-items:center;
+  justify-content:center; gap:8px; position:relative; overflow:hidden;
+  transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.btn-login:hover{transform:translateY(-2px); box-shadow:0 12px 30px rgba(244,180,0,0.4);}
+.btn-login:active{transform:scale(0.98);}
+.btn-login svg{width:18px; height:18px; transition:transform .3s var(--ease);}
+.btn-login:hover svg{transform:translateX(3px);}
+
+.ripple{position:absolute; border-radius:50%; background:rgba(255,255,255,0.5); transform:scale(0); animation:rippleAnim .6s var(--ease);}
+@keyframes rippleAnim{to{transform:scale(3); opacity:0;}}
+
+.divider{display:flex; align-items:center; gap:14px; margin:26px 0; color:var(--muted-text); font-size:0.82rem;}
+.divider::before, .divider::after{content:''; flex:1; height:1px; background:var(--border-soft);}
+
+.helper-note{
+  text-align:center; font-size:0.88rem; color:var(--muted-text); background:#EFF5FA;
+  border-radius:12px; padding:12px 16px; line-height:1.5;
+}
+.helper-note strong{color:var(--primary);}
+
+.form-foot{text-align:center; margin-top:26px; font-size:0.88rem; color:var(--muted-text);}
+.form-foot a{color:var(--secondary); font-weight:600;}
+.back-home{
+  display:inline-flex; align-items:center; gap:6px; font-size:0.85rem; color:var(--muted-text);
+  margin-top:22px; font-weight:500; transition:color .3s;
+}
+.back-home:hover{color:var(--primary);}
+.back-home svg{width:15px; height:15px;}
+
+/* Error state (demo) */
+.field.error input{border-color:#D64545; box-shadow:0 0 0 4px rgba(214,69,69,0.08);}
+.field-error-msg{display:none; color:#D64545; font-size:0.8rem; margin-top:6px; font-weight:500;}
+.field.error .field-error-msg{display:block;}
+
+/* Reveal animation */
+.reveal{opacity:0; transform:translateY(20px); transition:opacity .7s var(--ease), transform .7s var(--ease);}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:960px){
+  .login-shell{grid-template-columns:1fr;}
+  .brand-panel{display:none;}
+  .form-panel{padding:32px 20px; min-height:100vh;}
+}
+@media (max-width:400px){
+  .glass-form{padding:26px 22px;}
+}
+</style>
+</head>
+<body>
+
+<div class="login-shell">
+
+  <!-- ============================================================
+       LEFT — BRAND / PHOTO PANEL
+       ============================================================ -->
+  <aside class="brand-panel">
+    <div class="brand-panel-bg"></div>
+    <div class="brand-pattern"></div>
+
+    <a href="index.html" class="brand-logo">
+      <span class="brand-logo-mark">WB</span>
+      Waterbrook Schools
+    </a>
+
+    <div class="brand-copy">
+      <span class="eyebrow">Portal Access</span>
+      <h1>Everything your child&rsquo;s school day needs, in one place.</h1>
+      <p>Attendance, report cards, assignments, fees, and announcements &mdash; securely available to Waterbrook parents and teachers, anytime.</p>
+    </div>
+
+    <div class="brand-foot">
+      <span class="stars">★★★★★</span> Trusted by Parents Across Lagos
+    </div>
+  </aside>
+
+  <!-- ============================================================
+       RIGHT — LOGIN FORM
+       ============================================================ -->
+  <main class="form-panel">
+    <div class="form-card">
+
+      <div class="form-head reveal">
+        <h2>Welcome back</h2>
+        <p>Sign in to access your Waterbrook portal.</p>
+      </div>
+
+      <div class="role-switch reveal" id="roleSwitch" data-role="parent">
+        <div class="role-switch-thumb"></div>
+        <button type="button" class="active" data-role="parent">Parent</button>
+        <button type="button" data-role="teacher">Teacher</button>
+      </div>
+
+      <form class="glass-form reveal" id="loginForm" novalidate>
+
+        <div class="field" id="emailField">
+          <label for="email">Email address</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V7a1 1 0 011-1z"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>
+            <input type="email" id="email" placeholder="you@example.com" autocomplete="username" required>
+          </div>
+          <div class="field-error-msg">Please enter a valid email address.</div>
+        </div>
+
+        <div class="field" id="passwordField">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>
+            <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required>
+            <button type="button" class="toggle-pass" id="togglePass" aria-label="Show password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="field-error-msg">Please enter your password.</div>
+        </div>
+
+        <div class="form-row-between">
+          <label class="remember">
+            <input type="checkbox" id="remember">
+            Remember me
+          </label>
+          <a href="#" class="forgot-link" id="forgotLink">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-login" id="loginBtn">
+          <span id="loginBtnText">Sign In</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+
+        <div class="divider">Need help?</div>
+
+        <p class="helper-note" id="helperNote">
+          <strong>Parent Portal:</strong> use the email address registered during admission. First-time login? Contact the school office for your temporary password.
+        </p>
+
+      </form>
+
+      <p class="form-foot reveal">New to Waterbrook? <a href="#admissions">Apply for admission</a></p>
+
+      <a href="index.html" class="back-home reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        Back to homepage
+      </a>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Reveal on load ---------- */
+  window.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.reveal').forEach(function(el, i){
+      setTimeout(function(){ el.classList.add('in'); }, 80 * i);
+    });
+  });
+
+  /* ---------- Role switch (Parent / Teacher) ---------- */
+  const roleSwitch = document.getElementById('roleSwitch');
+  const roleButtons = roleSwitch.querySelectorAll('button');
+  const helperNote = document.getElementById('helperNote');
+  const emailInput = document.getElementById('email');
+
+  const copy = {
+    parent: {
+      helper: '<strong>Parent Portal:</strong> use the email address registered during admission. First-time login? Contact the school office for your temporary password.',
+      placeholder: 'you@example.com'
+    },
+    teacher: {
+      helper: '<strong>Teacher Portal:</strong> use your official Waterbrook staff email. Trouble signing in? Reach the IT desk on extension 204.',
+      placeholder: 'yourname@waterbrookschools.ng'
+    }
+  };
+
+  roleButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const role = btn.getAttribute('data-role');
+      roleSwitch.setAttribute('data-role', role);
+      roleButtons.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      helperNote.innerHTML = copy[role].helper;
+      emailInput.setAttribute('placeholder', copy[role].placeholder);
+    });
+  });
+
+  /* ---------- Password visibility toggle ---------- */
+  const togglePass = document.getElementById('togglePass');
+  const passwordInput = document.getElementById('password');
+  togglePass.addEventListener('click', function(){
+    const isHidden = passwordInput.type === 'password';
+    passwordInput.type = isHidden ? 'text' : 'password';
+    togglePass.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+    togglePass.innerHTML = isHidden
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 002.8 2.8"/><path d="M9.9 5.1A10.4 10.4 0 0112 5c6 0 10 7 10 7a13.9 13.9 0 01-3.1 3.8M6.2 6.2C4 7.7 2 10 2 12c0 0 4 7 10 7 1.4 0 2.7-.3 3.9-.9"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>';
+  });
+
+  /* ---------- Form validation (demo — no backend) ---------- */
+  const form = document.getElementById('loginForm');
+  const emailField = document.getElementById('emailField');
+  const passwordField = document.getElementById('passwordField');
+  const loginBtn = document.getElementById('loginBtn');
+  const loginBtnText = document.getElementById('loginBtnText');
+
+  function isValidEmail(value){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    let valid = true;
+
+    if(!isValidEmail(emailInput.value.trim())){
+      emailField.classList.add('error');
+      valid = false;
+    } else {
+      emailField.classList.remove('error');
+    }
+
+    if(passwordInput.value.trim().length === 0){
+      passwordField.classList.add('error');
+      valid = false;
+    } else {
+      passwordField.classList.remove('error');
+    }
+
+    if(!valid) return;
+
+    /* Demo-only: simulate a sign-in request. Replace with a real API call. */
+    loginBtn.disabled = true;
+    loginBtnText.textContent = 'Signing in…';
+    setTimeout(function(){
+      loginBtnText.textContent = 'Signed In ✓';
+      setTimeout(function(){
+        loginBtn.disabled = false;
+        loginBtnText.textContent = 'Sign In';
+      }, 1600);
+    }, 1200);
+  });
+
+  /* Clear error state as the user types */
+  [emailInput, passwordInput].forEach(function(input){
+    input.addEventListener('input', function(){
+      input.closest('.field').classList.remove('error');
+    });
+  });
+
+  /* ---------- Forgot password (demo) ---------- */
+  document.getElementById('forgotLink').addEventListener('click', function(e){
+    e.preventDefault();
+    alert('This is a sample page. In production, this would open a password-reset flow sent to your registered email.');
+  });
+
+  /* ---------- Button ripple ---------- */
+  document.querySelectorAll('.btn-login').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      const rect = btn.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      const size = Math.max(rect.width, rect.height);
+      ripple.className = 'ripple';
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+      ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+      btn.appendChild(ripple);
+      setTimeout(function(){ ripple.remove(); }, 650);
+    });
+  });
+
+})();
+</script>
+</body>
+</html>
